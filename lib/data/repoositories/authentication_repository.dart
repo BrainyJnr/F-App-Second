@@ -1,4 +1,4 @@
-import 'package:f/Navigation_menu.dart';
+import 'package:f/navigation_menu.dart';
 import 'package:f/data/user/user_repository.dart';
 import 'package:f/features/authentication/screens/login/login.dart';
 import 'package:f/features/authentication/screens/onboarding/onboarding.dart';

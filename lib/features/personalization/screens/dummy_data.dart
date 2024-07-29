@@ -1,8 +1,8 @@
-  import 'package:f/features/shops/models/banner_model.dart';
-   import 'package:f/features/shops/models/brand_model.dart';
-   import 'package:f/features/shops/models/product_model.dart';
- import 'package:f/features/shops/models/product_variation_model.dart';
- import 'package:f/routes/routes.dart';
+import 'package:f/features/shops/models/banner_model.dart';
+import 'package:f/features/shops/models/brand_model.dart';
+import 'package:f/features/shops/models/product_model.dart';
+import 'package:f/features/shops/models/product_variation_model.dart';
+import 'package:f/routes/routes.dart';
 
  import '../../shops/models/category_model.dart';
  import 'package:f/utilis/constants/image_strings.dart';

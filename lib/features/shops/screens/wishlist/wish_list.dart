@@ -1,4 +1,4 @@
-import 'package:f/Navigation_menu.dart';
+import 'package:f/navigation_menu.dart';
 import 'package:f/common/widgets/appbar/appbar.dart';
 import 'package:f/common/widgets/favourite_icon/favourite_controller.dart';
 import 'package:f/common/widgets/icons/f_circular_icon.dart';

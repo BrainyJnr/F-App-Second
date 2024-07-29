@@ -7,7 +7,7 @@ import 'package:f/utilis/constants/text_strings.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../../../Navigation_menu.dart';
+import '../../../../../navigation_menu.dart';
 import '../../../login/logn_controller.dart';
 
 class fLoginForm extends StatelessWidget {

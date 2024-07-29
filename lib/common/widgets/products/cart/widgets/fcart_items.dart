@@ -20,62 +20,66 @@ class fCartItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartController = CartController.instance;
 
-    return Obx(
-      () =>
-          //ListView(
-        //children: [
-         ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: cartController.cartItems.length,
-                    separatorBuilder: (_, __) => const SizedBox(
-                      height: fSizes.spaceBtwSections,
-                    ),
-                    itemBuilder: (_, index) => Obx(() {
-                      final item = cartController.cartItems[index];
-                      return  Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                            fCartItem(
-                              cartItem: item,
-                            ),
-                            if (showAddRemoveButtons)
-                              const SizedBox(
-                                height: fSizes.spaceBtwItems,
+    return SingleChildScrollView(
+      child: Obx(
+        () =>
+            //ListView(
+          //children: [
+           ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: cartController.cartItems.length,
+                      physics: NeverScrollableScrollPhysics(),
+
+                        separatorBuilder: (_, __) => const SizedBox(
+                        height: fSizes.spaceBtwSections,
+                      ),
+                      itemBuilder: (_, index) => Obx(() {
+                        final item = cartController.cartItems[index];
+                        return  Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                              fCartItem(
+                                cartItem: item,
                               ),
+                              if (showAddRemoveButtons)
+                                const SizedBox(
+                                  height: fSizes.spaceBtwItems,
+                                ),
 
-                            /// Add Remove Button Row With Total Price
-                            if (showAddRemoveButtons)
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 70,
-                                        ),
+                              /// Add Remove Button Row With Total Price
+                              if (showAddRemoveButtons)
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 70,
+                                          ),
 
-                                        /// Add Remove Button
-                                        fQuantity_Product_With_Add_And_Remove(
-                                          quantity: item.quantity,
-                                          add: () => cartController.addOneToCart(item),
-                                          remove: () =>
-                                              cartController.removeOneFromCart(item),
-                                        )
-                                      ],
-                                    ),
+                                          /// Add Remove Button
+                                          fQuantity_Product_With_Add_And_Remove(
+                                            quantity: item.quantity,
+                                            add: () => cartController.addOneToCart(item),
+                                            remove: () =>
+                                                cartController.removeOneFromCart(item),
+                                          )
+                                        ],
+                                      ),
 
-                                    /// --- Price total price
-                                    fProductPriceText(
-                                        price:
-                                            (item.price * item.quantity).toStringAsFixed(1)),
-                                  ])
-                          ]);
-                       } )
-                       ),
+                                      /// --- Price total price
+                                      fProductPriceText(
+                                          price:
+                                              (item.price * item.quantity).toStringAsFixed(1)),
+                                    ])
+                            ]);
+                         } )
+                         ),
 
 
-       );
+         ),
+    );
 
 
 

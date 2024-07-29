@@ -24,6 +24,82 @@ class CartController extends GetxController {
   }
 
   // Add items in the cart
+//  void addToCart(ProductModel product) {
+//     // Quantity Check
+//     if (productQuantityInCart.value < 1) {
+//       fLoaders.customToast(message: "Select Quantity");
+//       return;
+//     }
+//
+//
+//     // Variation Selected?
+//     if (product.productType == ProductType.variable.toString() &&
+//         variationController.selectedVariation.value.id.isEmpty) {
+//       fLoaders.customToast(message: "Select Variation");
+//       return;
+//     }
+//     // Out of Stock Status
+//     if (product.productType == ProductType.variable.toString()) {
+//       if (variationController.selectedVariation.value.stock < 1) {
+//         fLoaders.warningSnackBar(
+//             message: "Selected variation is out of stock mannnn",
+//             title: "Oh Snap!");
+//         return;
+//       }
+//     } else {
+//       if (product.stock < 1) {
+//         fLoaders.warningSnackBar(
+//             message: "Selected Product is out of stock", title: "Oh Snap!");
+//       }
+//     }
+//     void removeFromCart(ProductModel product) {
+//       // Quantity Check
+//       if (productQuantityInCart.value < 1) {
+//         return;
+//       }
+//
+//       // Convert the ProductModel to a CartItemModel with the given quantity
+//       final selectedCartItem =
+//       convertToCartItem(product, productQuantityInCart.value);
+//
+//       // Check if already added in the Cart
+//       int index = cartItems.indexWhere((cartItem) =>
+//       cartItem.productId == selectedCartItem.productId &&
+//           cartItem.variationId == selectedCartItem.variationId);
+//
+//       if (index >= 0) {
+//         // Reduce the quantity or remove from cart if quantity is 0
+//         if (cartItems[index].quantity > 1) {
+//           cartItems[index].quantity -= 1;
+//         } else {
+//           cartItems.removeAt(index);
+//         }
+//       }
+//
+//       updateCart();
+//       fLoaders.customToast(message: "Product quantity has been updated");
+//     }
+//
+//     // Convert the ProductModel to a CartItemModel with the given quantity
+//     final selectedCartItem =
+//         convertToCartItem(product, productQuantityInCart.value);
+//
+//     // Check if already added in the Cart
+//     int index = cartItems.indexWhere((cartItem) =>
+//         cartItem.productId == selectedCartItem.productId &&
+//         cartItem.variationId == selectedCartItem.variationId);
+//
+//     if (index >= 0) {
+//       // This quantity is already added or Updated/Removed from the design (Cart)(-)
+//       cartItems[index].quantity = selectedCartItem.quantity;
+//     } else {
+//       cartItems.add(selectedCartItem);
+//     }
+//
+//     updateCart();
+//     fLoaders.customToast(message: "Your Product has been added to the Cart");
+//   }
+
   void addToCart(ProductModel product) {
     // Quantity Check
     if (productQuantityInCart.value < 1) {
@@ -41,7 +117,7 @@ class CartController extends GetxController {
     if (product.productType == ProductType.variable.toString()) {
       if (variationController.selectedVariation.value.stock < 1) {
         fLoaders.warningSnackBar(
-            message: "Selected variation is out of stock mannnn",
+            message: "Selected variation is out of stock",
             title: "Oh Snap!");
         return;
       }
@@ -54,11 +130,11 @@ class CartController extends GetxController {
 
     // Convert the ProductModel to a CartItemModel with the given quantity
     final selectedCartItem =
-        convertToCartItem(product, productQuantityInCart.value);
+    convertToCartItem(product, productQuantityInCart.value);
 
     // Check if already added in the Cart
     int index = cartItems.indexWhere((cartItem) =>
-        cartItem.productId == selectedCartItem.productId &&
+    cartItem.productId == selectedCartItem.productId &&
         cartItem.variationId == selectedCartItem.variationId);
 
     if (index >= 0) {
@@ -70,6 +146,34 @@ class CartController extends GetxController {
 
     updateCart();
     fLoaders.customToast(message: "Your Product has been added to the Cart");
+  }
+
+  void removeFromCart(ProductModel product) {
+    // Quantity Check
+    if (productQuantityInCart.value < 0) {
+      return;
+    }
+
+    // Convert the ProductModel to a CartItemModel with the given quantity
+    final selectedCartItem =
+    convertToCartItem(product, productQuantityInCart.value);
+
+    // Check if already added in the Cart
+    int index = cartItems.indexWhere((cartItem) =>
+    cartItem.productId == selectedCartItem.productId &&
+        cartItem.variationId == selectedCartItem.variationId);
+
+    if (index >= 0) {
+      // Reduce the quantity or remove from cart if quantity is 0
+      if (cartItems[index].quantity > 1) {
+        cartItems[index].quantity -= 1;
+      } else {
+        cartItems.removeAt(index);
+      }
+    }
+
+    updateCart();
+    fLoaders.customToast(message: "Product quantity has been updated");
   }
 
   void addOneToCart(CartItemModel item) {
@@ -85,7 +189,7 @@ class CartController extends GetxController {
   }
 
   void removeOneFromCart(CartItemModel item) {
-    int index = cartItems.indexWhere((cartItem) => cartItem.productId == cartItem.productId && cartItem.variationId == item.variationId);
+    int index = cartItems.indexWhere((cartItem) => cartItem.productId == item.productId && cartItem.variationId == item.variationId);
 
     if(index >= 0) {
       if(cartItems[index].quantity > 1) {

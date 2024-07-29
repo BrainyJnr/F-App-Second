@@ -1,4 +1,4 @@
-import 'package:f/Navigation_menu.dart';
+import 'package:f/navigation_menu.dart';
 import 'package:f/common/widgets/success_screen/success_screen.dart';
 import 'package:f/data/repoositories/authentication_repository.dart';
 import 'package:f/features/personalization/controllers/cart_controller.dart';
