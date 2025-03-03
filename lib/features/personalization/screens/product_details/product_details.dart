@@ -52,7 +52,7 @@ class ProductDetailScreen extends StatelessWidget {
 
                   /// -- Attribute
                   if(product.productType == ProductType.variable.toString())  fProductAttribute(product: product,),
-                  if(product.productType == ProductType.single.toString()) const SizedBox(height: fSizes.spaceBtwSections,),
+                  if(product.productType == ProductType.variable.toString()) const SizedBox(height: fSizes.spaceBtwSections,),
 
                   const SizedBox(
                     height: fSizes.spaceBtwSections,

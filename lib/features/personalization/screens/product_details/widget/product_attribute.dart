@@ -14,7 +14,7 @@ import '../../../../shops/controllers/products/variation_controller.dart';
 import '../../../../shops/models/product_model.dart';
 
 class fProductAttribute extends StatelessWidget {
-  const fProductAttribute({super.key, required this.product});
+  const fProductAttribute({Key? key, required this.product}) : super(key: key);
 
   final ProductModel product;
 
@@ -22,129 +22,103 @@ class fProductAttribute extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(VariationController());
     final dark = fHelperFunctions.isDarkMode(context);
-    return Obx(
-        () => Column(children: [
-        /// -- Selected Attribute Pricing & Description
-        if (controller.selectedVariation.value.id.isNotEmpty)
-          Padding(
-              padding: EdgeInsets.only(left: 21),
-              child: fRoundedContainer(
-                  padding: const EdgeInsets.all(fSizes.md),
-                  backgroundColor: dark ? fColors.darkerGrey : fColors.grey,
-                  child: Column(children: [
-                    /// Title, Price and Stack Status
-                    Row(children: [
-                      fSectionHeading(
-                        title: "Variation",
-                        showActionButton: false,
-                      ),
-                      SizedBox(
-                        width: fSizes.spaceBtwItems,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const fProductTitleText(
-                                title: "Price : ",
-                                smallSize: true,
-                              ),
 
-                              /// Actual Price
-                              if(controller.selectedVariation.value.salePrice > 0)
-                              Text(
-                               "\$${controller.getVariationPrice()}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .apply(
-                                        decoration: TextDecoration.lineThrough),
-                              ),
-                              const SizedBox(
-                                width: fSizes.spaceBtwItems,
-                              ),
+    // Reset the controller when the product changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.resetSelectedAttributes();
+    });
 
-                              /// Sale Price
-                               fProductPriceText(price: controller.getVariationPrice())
-                            ],
-                          ),
-
-                          /// Stock
-                          Row(
-                            children: [
-                              const fProductTitleText(
-                                title: "Stock : ",
-                                smallSize: true,
-                              ),
-                              Text(
-                                controller.variationStockStatus.value,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ]),
-
-                    /// Variation Description
-                     fProductTitleText(
-                      title:
-                          controller.selectedVariation.value.description ?? "",
-                      smallSize: true,
-                      maxLines: 4,
-                    )
-                  ]))),
-        const SizedBox(height: 10),
-
-        /// -- Attribuutes
+    return Obx(() => Column(children: [
+      if (controller.selectedVariation.value.id.isNotEmpty)
         Padding(
-            padding: EdgeInsets.only(left: 22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: product.productAttributes!
-                  .map((attribute) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            fSectionHeading(
-                              title: attribute.name ?? "",
-                              showActionButton: false,
-                            ),
-                            SizedBox(
-                              height: fSizes.spaceBtwItems / 2,
-                            ),
-                            Obx(
-                              () => Wrap(
-                                spacing: 6,
-                                children: attribute.values!.map((attributeValue) {
-                                  final isSelected = controller
-                                          .selectedAttributes[attribute.name] ==
-                                      attributeValue;
-                                  final available = controller
-                                      .getAttributeAvailabilityInVariation(
-                                          product.productVariations!,
-                                          attribute.name!)
-                                      .contains(attributeValue);
-                                  return fChoiceChip(
-                                      text: attributeValue,
-                                      selected: isSelected,
-                                      onSelected: available
-                                          ? (selected) {
-                                              if (selected && available) {
-                                                controller.onAttributeSelected(
-                                                    product,
-                                                    attribute.name ?? "",
-                                                    attributeValue);
-                                              }
-                                            }
-                                          : null);
-                                }).toList(),
-                              ),
-                            )
-                          ]))
-                  .toList(),
-            ))
-      ]),
-    );
+          padding: const EdgeInsets.only(left: 21),
+          child: fRoundedContainer(
+              padding: const EdgeInsets.all(fSizes.md),
+              backgroundColor: dark ? fColors.darkerGrey : fColors.grey,
+              child: Column(children: [
+                /// Title, Price, and Stock Status
+                Row(children: [
+                  const fSectionHeading(title: "Variation", showActionButton: false),
+                  SizedBox(width: fSizes.spaceBtwItems),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(children: [
+                        const fProductTitleText(title: "Price : ", smallSize: true),
+
+                        /// Actual Price
+                        if (controller.selectedVariation.value.salePrice > 0)
+                          Text(
+                            "\$${controller.getVariationPrice()}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .apply(decoration: TextDecoration.lineThrough),
+                          ),
+                        const SizedBox(width: fSizes.spaceBtwItems),
+
+                        /// Sale Price
+                        fProductPriceText(price: controller.getVariationPrice())
+                      ]),
+
+                      /// Stock
+                      Row(children: [
+                        const fProductTitleText(title: "Stock : ", smallSize: true),
+                        Text(
+                          controller.variationStockStatus.value,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        )
+                      ])
+                    ],
+                  ),
+                ]),
+
+                /// Variation Description
+                fProductTitleText(
+                  title: controller.selectedVariation.value.description ?? "",
+                  smallSize: true,
+                  maxLines: 4,
+                )
+              ])),
+        ),
+      const SizedBox(height: 10),
+
+      /// -- Attributes
+      Padding(
+        padding: const EdgeInsets.only(left: 22),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: product.productAttributes!
+              .map((attribute) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              fSectionHeading(title: attribute.name ?? "", showActionButton: false),
+              SizedBox(height: fSizes.spaceBtwItems / 2),
+              Obx(() => Wrap(
+                spacing: 6,
+                children: attribute.values!.map((attributeValue) {
+                  final isSelected = controller.selectedAttributes[attribute.name] == attributeValue;
+                  final available = controller
+                      .getAttributeAvailabilityInVariation(product.productVariations!, attribute.name!)
+                      .contains(attributeValue);
+                  return fChoiceChip(
+                      text: attributeValue,
+                      selected: isSelected,
+                      onSelected: available
+                          ? (selected) {
+                        if (selected && available) {
+                          controller.onAttributeSelected(
+                              product, attribute.name ?? "", attributeValue);
+                        }
+                      }
+                          : null);
+                }).toList(),
+              ))
+            ],
+          ))
+              .toList(),
+        ),
+      )
+    ]));
   }
 }
