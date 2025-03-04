@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:f/common/widgets/appbar/appbar.dart';
 import 'package:f/features/personalization/controllers/user_controller.dart';
 import 'package:f/utilis/constants/text_strings.dart';

@@ -46,20 +46,36 @@ class fProductAttribute extends StatelessWidget {
                       Row(children: [
                         const fProductTitleText(title: "Price : ", smallSize: true),
 
-                        /// Actual Price
-                        if (controller.selectedVariation.value.salePrice > 0)
-                          Text(
-                            "\$${controller.getVariationPrice()}",
+                        Text(
+                            "\$${controller.selectedVariation.value.price}",
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!
-                                .apply(decoration: TextDecoration.lineThrough),
-                          ),
+                                .apply(decoration:
+                            controller.selectedVariation.value.salePrice > 0
+                                ? TextDecoration.lineThrough
+                                : null
+                            ),
+                        ),
+                        /// Actual Price
+                       // if (controller.selectedVariation.value.salePrice > 0)
+    //                           Text(
+    //                             "\$${controller.getVariationPrice()}",
+    //                             style: Theme.of(context)
+    //                                 .textTheme
+    //                                 .titleSmall!
+    //                                 .apply(decoration: TextDecoration.lineThrough),
+    //                           ),
                         const SizedBox(width: fSizes.spaceBtwItems),
 
+    /// Sale Price
+    if (controller.selectedVariation.value.salePrice > 0)
+    fProductPriceText(price: controller.selectedVariation.value.salePrice.toString())
+    ]),
+
                         /// Sale Price
-                        fProductPriceText(price: controller.getVariationPrice())
-                      ]),
+                       // fProductPriceText(price: controller.getVariationPrice())
+
 
                       /// Stock
                       Row(children: [

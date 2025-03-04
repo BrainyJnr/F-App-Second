@@ -235,6 +235,7 @@ class CartController extends GetxController {
     }
 
   /// This function converts a ProductModel to a CartItemModel
+  /// This function converts a ProductModel to a CartItemModel
   CartItemModel convertToCartItem(ProductModel product, int quantity) {
     if (product.productType == ProductType.single.toString()) {
       // Reset Variation in case of single product type.
@@ -245,27 +246,23 @@ class CartController extends GetxController {
     final isVariation = variation.id.isNotEmpty;
     final price = isVariation
         ? variation.salePrice > 0.0
-            ? variation.salePrice
-            : variation.price
+        ? variation.salePrice
+        : variation.price
         : product.salePrice > 0.0
-            ? product.salePrice
-            : product.price;
-
-
-    //-------------------------------------------------------------------------//
+        ? product.salePrice
+        : product.price;
 
     return CartItemModel(
       productId: product.id,
       quantity: quantity,
       title: product.title,
-      price: product.salePrice,
+      price: isVariation ? variation.salePrice : product.salePrice, // Corrected here
       variationId: variation.id,
       image: isVariation ? variation.image : product.thumbnail,
       brandName: product.brand != null ? product.brand!.name : "",
       selectedVariation: isVariation ? variation.attributeValues : null,
     );
   }
-
   /// Update Cart Values
   void updateCart() {
     updateCartTotals();

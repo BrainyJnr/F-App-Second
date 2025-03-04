@@ -15,13 +15,21 @@ class OrderRepository extends GetxController {
   /// Get  all order related to current User
   Future<List<OrderModel>> fetchUserOrders() async {
     try {
-      final userId = AuthenticationRepository.instance.authUser.uid;
-      if (userId.isEmpty) throw "Unable to find user information. Try again in few minutes.";
+      final userid = AuthenticationRepository.instance.authUser.uid;
+      if (userid.isEmpty) {
+        throw "Unable to find user information. Try again in a few minutes.";
+      }
 
-      final result = await _db.collection("Users").doc(userId).collection("Orders").get();
-      return result.docs.map((documentSnapshot) => OrderModel.fromSnapshot(documentSnapshot)).toList();
+      final result = await _db
+          .collection("Orders")
+          .where("userid", isEqualTo: userid)
+          .get();
+
+      return result.docs
+          .map((documentSnapshot) => OrderModel.fromSnapshot(documentSnapshot))
+          .toList();
     } catch (e) {
-      throw "Something went wrong while fetching Order Information. $e ";
+      throw "Something went wrong while fetching Order Information. $e";
     }
   }
 
